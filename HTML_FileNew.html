@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For My Love 💝</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #fff0f5, #ffe0e9);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+      z-index: 1;
+      position: relative;
+    }
+
+    h2 {
+      color: #d63384;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 90%;
+      border: 2px solid #f8bbd0;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e754a6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .love-message {
+      font-size: 26px;
+      font-weight: bold;
+      color: #c2185b;
+      margin-top: 20px;
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: float 8s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(1); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+    }
+
+    .teddy {
+      width: 150px;
+      margin-top: 20px;
+      animation: pop 1s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .heart {
+      position: fixed;
+      top: -50px;
+      font-size: 20px;
+      color: #ff69b4;
+      animation: fall 5s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    #typewriter::after {
+      content: '|';
+      animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="formContainer">
+  <h2 id="question">What is your name? 💖</h2>
+  <input type="text" id="inputField" placeholder="Type here..." />
+  <br>
+  <button onclick="handleNext()">Next ➡️</button>
+</div>
+
+<div class="container hidden" id="giftContainer">
+  <img src="https://i.ibb.co/xqp5Q34b/iMagemy.jpg" alt="Teddy Bear" class="teddy" />
+  <div class="love-message">❤️ I LOVE YOU ❤️</div>
+</div>
+
+<div class="container hidden" id="messageContainer">
+  <p id="typewriter" style="font-size: 20px; color: #880e4f;"></p>
+</div>
+
+<!-- Background Romantic Music -->
+<audio id="romanticMusic" src="https://res.cloudinary.com/dkysagxib/video/upload/v1749804088/Jeene_Laga_Hoon_Ramaiya_Vastavaiya_320_Kbps_uny4dg.mp3" autoplay loop></audio>
+
+<!-- Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+  let step = 0;
+  const formContainer = document.getElementById('formContainer');
+  const giftContainer = document.getElementById('giftContainer');
+  const inputField = document.getElementById('inputField');
+  const question = document.getElementById('question');
+
+  function handleNext() {
+    const val = inputField.value.trim().toLowerCase();
+    if (step === 0) {
+      if (val !== 'shivani') {
+        alert("Only Correct Name is allowed here 💘");
+        return;
+      }
+      question.innerText = "Whom do you love? 💌";
+      inputField.value = "";
+      step++;
+    } else if (step === 1) {
+      if (val !== 'akash') {
+        alert("Only Akash is in your heart, right? 💞");
+        return;
+      }
+      question.innerText = "From your husband: A small, sweet surprise for you 💝";
+      inputField.classList.add('hidden');
+      step++;
+    } else if (step === 2) {
+      formContainer.innerHTML = `
+        <h2>From your husband: A small, sweet surprise for you 💝</h2>
+        <button onclick="showGift()">Yes 💝</button>
+      `;
+    }
+  }
+
+  function showGift() {
+    document.getElementById("romanticMusic").play();
+    formContainer.classList.add("hidden");
+    giftContainer.classList.remove("hidden");
+    createEmojis();
+
+    // Show typewriter message after delay
+    setTimeout(() => {
+      const messageContainer = document.getElementById("messageContainer");
+      const typewriter = document.getElementById("typewriter");
+      messageContainer.classList.remove("hidden");
+
+      const message = "You're the light of my life, my forever and always. 💖";
+      let i = 0;
+      const interval = setInterval(() => {
+        typewriter.innerText += message.charAt(i);
+        i++;
+        if (i >= message.length) clearInterval(interval);
+      }, 100);
+    }, 3000);
+
+    // Firework confetti
+    setTimeout(() => {
+      confetti({
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }, 1000);
+  }
+
+  function createEmojis() {
+    const emojis = ['❤️','💋','😘','🥰','💖','💞','💘','✨'];
+    for (let i = 0; i < 50; i++) {
+      const span = document.createElement('span');
+      span.classList.add('emoji');
+      span.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.animationDuration = (4 + Math.random() * 6) + "s";
+      document.body.appendChild(span);
+    }
+
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerText = '💗';
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+    }
+  }
+</script>
+
+</body>
+</html>
