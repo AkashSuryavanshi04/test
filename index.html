@@ -54,6 +54,11 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
+  #audioContainer {
+    display: none;
+    margin-top: 2em;
+  }
+
   @media (max-width: 480px) {
     h1 {
       font-size: 2.5rem;
@@ -75,10 +80,13 @@
 <div id="countdown"></div>
 <div id="message"></div>
 
-<audio id="weddingSong" controls style="display:none;">
-  <source src="wedding-song.mp3" type="audio/mpeg" />
-  Your browser does not support the audio element.
-</audio>
+<!-- AUDIO PLAYER (hidden initially) -->
+<div id="audioContainer">
+  <audio id="weddingSong" controls>
+    <source src="wedding-song.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+</div>
 
 <script>
   // Initial start date (today in your story)
@@ -90,8 +98,8 @@
   const countdownElem = document.getElementById('countdown');
   const messageElem = document.getElementById('message');
   const audio = document.getElementById('weddingSong');
+  const audioContainer = document.getElementById('audioContainer');
 
-  // Format date nicely e.g., July 18, 2025
   function formatDate(date) {
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -100,17 +108,19 @@
     });
   }
 
-  // Update the countdown display and messages
   function updateCountdown(currentDate) {
     const diff = weddingDate - currentDate;
 
     if (diff <= 0) {
       countdownElem.textContent = "Today is our wedding day! 💍❤️";
       messageElem.textContent = "I can't wait to start our forever together.";
-      audio.style.display = 'block';
+      
+      // Show and try to play the audio
+      audioContainer.style.display = 'block';
       audio.play().catch(() => {
-        // Autoplay might be blocked; user can press play
+        alert("Click the play button to enjoy our special song 🎶");
       });
+      
       return true;
     } else {
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -125,8 +135,7 @@
   currentDateElem.textContent = formatDate(simulatedDate);
   updateCountdown(simulatedDate);
 
-  // Advance the date every 3 seconds by 10 days for demo purpose
-  // Remove or comment out if you want a real-time countdown instead
+  // Advance the date every 1 second by 10 days for demo
   const interval = setInterval(() => {
     simulatedDate.setDate(simulatedDate.getDate() + 10);
     if (simulatedDate > weddingDate) {
